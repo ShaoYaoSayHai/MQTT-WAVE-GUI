@@ -99,6 +99,16 @@ MainWindow::MainWindow(QWidget *parent)
 /* ================================================================================================= */
 /* ========================================= 文件处理 END  ========================================== */
 
+    QString data =  "F:/ProjectQT/LQCP-GUI/build-LQCP-GUI-Desktop_Qt_5_14_2_MinGW_64_bit-Release/data1/data_20250822_083629956.txt" ;
+    QString pattern = "data1/data_" ;
+
+    FindString findString ;
+
+    if( findString.matchPrefix( data , pattern ) )
+    {
+        qDebug()<<"查找成功";
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -354,21 +364,60 @@ void MainWindow::onImportClicked() {
         QMessageBox::critical(this, "错误", "文件打开失败");
         return;
     }
-
+    qDebug()<<"文件路径 : "<<filePath;
     QTextStream in(&file);
     QVector<double> importedData;
     while (!in.atEnd()) {
         importedData.append(in.readLine().toDouble());
     }
     // 使用导入数据...
+//    reviewPrsVectorToUpdateWave( importedData ,  );
+
+    FindString findString ;
+    // 匹配目录标题
+    if( findString.matchPrefix((filePath) , "data1") )
+    {
+        reviewPrsVectorToUpdateWave( importedData ,doubleRxSensorPressBuffer_1  );
+        qDebug()<<"PRS1-目录" ;
+        reviewPrsWave();
+    }
+    else if( findString.matchPrefix((filePath) , "data2") )
+    {
+        reviewPrsVectorToUpdateWave( importedData , doubleRxSensorPressBuffer_2 );
+        qDebug()<<"PRS2-目录" ;
+        reviewPrsWave();
+    }
+    else
+    {
+        qDebug()<<"错误的目录" ;
+    }
 }
 
-void MainWindow::handleSaveCompleted(const QString &fileName) {
-//    ui->statusBar->showMessage("已保存: " + fileName, 3000);
-//    Q_UNUSED(fileName) ;
+void MainWindow::handleSaveCompleted(const QString &fileName)
+{
     qDebug()<<"保存数据成功 _ "+fileName ;
 }
 
+void MainWindow::reviewPrsVectorToUpdateWave(QVector<double> &source, QVector<double> &target)
+{
+    target = source ;// 赋值替代
+}
+
+/**
+ * @brief MainWindow::reviewPrsWave 刷新绘图
+ */
+void MainWindow::reviewPrsWave()
+{
+    ui->spinBox_press_1->setValue(1000) ;
+    ui->spinBox_press_2->setValue(1000) ;
+    QCustomPlot_UI_Update( ui->QCustomPlot_1 , doubleRxSensorPressBuffer_1 , ui->spinBox_press_1->value() );
+    QCustomPlot_UI_Update( ui->QCustomPlot_2 , doubleRxSensorPressBuffer_2 , ui->spinBox_press_2->value() );
+}
 
 
-
+void MainWindow::on_spinBox_press_1_valueChanged(int arg1)
+{
+    Q_UNUSED(arg1);
+    QCustomPlot_UI_Update( ui->QCustomPlot_1 , doubleRxSensorPressBuffer_1 , ui->spinBox_press_1->value() );
+    QCustomPlot_UI_Update( ui->QCustomPlot_2 , doubleRxSensorPressBuffer_2 , ui->spinBox_press_2->value() );
+}

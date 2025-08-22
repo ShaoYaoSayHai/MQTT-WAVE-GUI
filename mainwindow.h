@@ -20,6 +20,8 @@
 #include "dataprocesser.h"
 #include "fileworker.h"
 
+#include "findstring.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -84,12 +86,20 @@ private slots:
 
     void QCustomPlot_SetData( QVector<double> buffer_1 , QVector<double> buffer_2 , int size );
 
-    void QCustomPlot_SIGN_Update();
+    void QCustomPlot_SIGN_Update(); // 根据信号更新绘图
     void on_pushButton_3_clicked();
 
     void onStartClicked(); // 开始测试按钮
     void onImportClicked(); // 导入文件按钮
     void handleSaveCompleted(const QString &fileName); // 保存完成标记
+
+    // 替换数组
+    void reviewPrsVectorToUpdateWave( QVector<double> &source , QVector<double> &target );
+
+    // 更新绘图
+    void reviewPrsWave();
+
+    void on_spinBox_press_1_valueChanged(int arg1);
 
 signals:
 

@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     dataprocesser.cpp \
     fileworker.cpp \
+    findstring.cpp \
     jsonparser.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 HEADERS += \
     dataprocesser.h \
     fileworker.h \
+    findstring.h \
     jsonparser.h \
     mainwindow.h \
     qcustomplot.h \

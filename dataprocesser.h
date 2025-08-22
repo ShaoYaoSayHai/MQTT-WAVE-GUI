@@ -20,7 +20,7 @@ signals:
 private:
 
     QVector<double> m_buffer;
-    const int CHUNK_SIZE = 100;
+    const int CHUNK_SIZE = 1000;
 
     int process_id ;
 
