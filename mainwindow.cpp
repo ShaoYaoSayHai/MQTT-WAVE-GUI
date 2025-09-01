@@ -156,7 +156,9 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    pxMqttClient->subscribe( this->mqttSubTopic , 1 );
+    QString targetTopic = ui->comboBox_TopicList->currentText() ;
+    qDebug()<<"目标TOPIC : "<<targetTopic ;
+    pxMqttClient->subscribe( targetTopic , 1 );
 }
 
 void MainWindow::MQTT_SubscribedSuccess(QString topic, quint8 Qos)
